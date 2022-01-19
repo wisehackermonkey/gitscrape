@@ -3,6 +3,7 @@ import requests
 import csv
 from datetime import datetime
 import sys
+import logging
 
 def fetch(base_url,page,token):
     
@@ -16,9 +17,11 @@ def format_row(row):
     
 
 if __name__ == "__main__":
+    logging.basicConfig(format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
+
     args = sys.argv
     max_page = 3
-    print(args)
+    logging.info(args)
     start_id = 0
     if args:
         max_page = int(args[1])
@@ -40,7 +43,7 @@ if __name__ == "__main__":
                 id, username, results = fetch(base_url,id,token)
                 logs.write(f"{id},{username}\n")
                 logs.flush()
-                print(id)
+                logging.info(id)
                 for row in results:
                     # print(format_row(row))
                     login, _id, node_id, avatar_url, gravatar_id, url, html_url, followers_url, following_url, gists_url, starred_url, subscriptions_url, organizations_url, repos_url, events_url, received_events_url, _type, site_admin = format_row(row)
